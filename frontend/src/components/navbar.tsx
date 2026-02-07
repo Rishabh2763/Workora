@@ -1,30 +1,31 @@
-'use client'
-import React, { useState } from "react";
+"use client";
 import Link from "next/link";
+import React, { useState } from "react";
 import { Button } from "./ui/button";
 import { Briefcase, Home, Info, LogOut, Menu, User, X } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { ModeToggle } from "./mode-toggle";
+import { useAppData } from "@/context/AppContext";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const { isAuth, user, setIsAuth, setUser, loading, logoutUser } =
+    useAppData();
+
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
   const logoutHandler = () => {
-    // logoutUser();
+    logoutUser();
   };
-
-  const isAuth=false;
-  const loading=false;
-
   return (
     <nav className="z-50 sticky top-0 bg-background/80 border-b backdrop-blur-md shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-        <div className="flex items-center">
+          <div className="flex items-center">
             <Link href={"/"} className="flex items-center gap-1 group">
               <div className="text-2xl font-bold tracking-tight">
                 <span className="bg-linear-to-r from bg-blue-600 to-blue-800 bg-clip-text text-transparent">
@@ -34,6 +35,7 @@ const NavBar = () => {
               </div>
             </Link>
           </div>
+
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1">
             <Link href={"/"}>
@@ -64,8 +66,8 @@ const NavBar = () => {
             </Link>
           </div>
 
-           {/* Right side Actions */}
-           <div className="hidden md:flex items-center gap-3">
+          {/* Right side Actions */}
+          <div className="hidden md:flex items-center gap-3">
             {loading ? (
               ""
             ) : (
@@ -76,12 +78,11 @@ const NavBar = () => {
                       <button className="flex items-center gap-2 hover:opacity-80 transition-opacity">
                         <Avatar className="h-9 w-9 ring-2 ring-offset-2 ring-offset-background ring-blue-500/20 cursor-pointer hover:ring-blue-500/40 transition-all">
                           <AvatarImage
-                            // src={user ? (user.profile_pic as string) : ""}
-                            // alt={user ? user.name : ""}
+                            src={user ? (user.profile_pic as string) : ""}
+                            alt={user ? user.name : ""}
                           />
                           <AvatarFallback className="bg-blue-100 dark:bg-blue-900 text-blue-600">
-                            {/* {user?.name?.charAt(0).toUpperCase() || "U"} */}
-                            R
+                            {user?.name?.charAt(0).toUpperCase() || "U"}
                           </AvatarFallback>
                         </Avatar>
                       </button>
@@ -90,12 +91,10 @@ const NavBar = () => {
                     <PopoverContent className="w-56 p-2" align="end">
                       <div className="px-3 py-2 mb-2 border-b">
                         <p className="text-sm font-semibold">
-                          {/* {user && user.name} */}
-                          Rishabh
+                          {user && user.name}
                         </p>
                         <p className="text-xs opacity-60 truncate">
-                          {/* {user && user.email} */}
-                          rishabh@gmail.com
+                          {user && user.email}
                         </p>
                       </div>
 
@@ -130,6 +129,7 @@ const NavBar = () => {
             )}
             <ModeToggle />
           </div>
+
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center gap-3">
             <ModeToggle />
@@ -145,7 +145,7 @@ const NavBar = () => {
         </div>
       </div>
 
-            {/* mobile view */}
+      {/* mobile view */}
       <div
         className={`md:hidden border-t overflow-hidden transition-all duration-300 ease-in-out ${
           isOpen ? "max-96 opacity-100" : "max-h-0 opacity-0"
@@ -211,7 +211,7 @@ const NavBar = () => {
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default NavBar
+export default NavBar;
