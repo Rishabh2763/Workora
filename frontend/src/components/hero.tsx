@@ -86,7 +86,7 @@ const Hero = () => {
             <div className="flex items-center gap-2 text-sm opacity-60 pt-4">
               <span>✔️ Free to use</span>
               <span>•</span>
-              <span>✔️ Verified emplyers</span>
+              <span>✔️ Verified employers</span>
               <span>•</span>
               <span>✔️ Secure platform</span>
             </div>

@@ -3,13 +3,17 @@
 import { AppContextType, Application, AppProviderProps, User } from "@/type";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-// import Cookies from "js-cookie";
+import Cookies from "js-cookie";
 import axios from "axios";
 
-export const utils_service = "http://35.154.186.96:5001";
-export const auth_service = "http://35.154.186.96:5000";
-export const user_service = "http://35.154.186.96:5002";
-export const job_service = "http://35.154.186.96:5003";
+// export const utils_service = "http://35.154.186.96:5001";
+export const utils_service = "http://localhost:5001";
+// export const auth_service = "http://35.154.186.96:5000";
+export const auth_service = "http://localhost:5000";
+// export const user_service = "http://35.154.186.96:5002";
+export const user_service = "http://localhost:5002";
+// export const job_service = "http://35.154.186.96:5003";
+export const job_service = "http://localhost:5003";
 export const payment_service = "http://35.154.186.96:5004";
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -20,16 +24,17 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [btnLoading, setBtnLoading] = useState(false);
 
-  // const token = Cookies.get("token");
+  const token = Cookies.get("token");
 
   async function fetchUser() {
+   
     try {
       const { data } = await axios.get(`${user_service}/api/user/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      
+
       setUser(data);
       setIsAuth(true);
     } catch (error) {
@@ -53,10 +58,10 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         }
       );
 
-      // toast.success(data.message);
+      toast.success(data.message);
       fetchUser();
     } catch (error: any) {
-      // toast.error(error.response.data.message);
+      toast.error(error.response.data.message);
     } finally {
       setLoading(false);
     }
@@ -96,10 +101,10 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
           },
         }
       );
-      // toast.success(data.message);
+      toast.success(data.message);
       fetchUser();
     } catch (error: any) {
-      // toast.error(error.response.data.message);
+      toast.error(error.response.data.message);
     } finally {
       setBtnLoading(false);
     }
@@ -197,6 +202,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   }
 
   useEffect(() => {
+    
     fetchUser();
     fetchApplications();
   }, []);
@@ -235,3 +241,4 @@ export const useAppData = (): AppContextType => {
   }
   return context;
 };
+
